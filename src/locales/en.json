@@ -1,0 +1,71 @@
+{
+  "common": {
+    "created": "Created successfully",
+    "deleteSuccess": "Delete successfully",
+    "getSuccess": "Data fetched successfully!",
+    "unableToaction": "Something went wrong while creating/manipulating categories!",
+    "updateSuccess": "Update successfully",
+    "dataNotFound": "Data not found",
+    "requiredFields": "Please provide required fields",
+    "default": "Failed to connect to the server!Please try again soon!",
+    "internalServerError": "Something went wrong, please try again after some time",
+    "unAuth": "Invalid authentication Please login.",
+    "joi": "Invalid details",
+    "fetchSuccess": "Fetch data successfully",
+    "notFound": "Page Not found",
+    "passwordError": "Password should have minimum 6 digit",
+    "invalidFile": "Please enter valid file upload type!",
+    "WrongPassword": "Old password is incorrect",
+    "logOut": "Log out successfully",
+    "invalidDetails": "input details invalid",
+    "invalidField": "You have entered wrong credential!",
+    "invalidData": "Please provide valid",
+    "noData": "No data available",
+    "deleted": "Deleted successfully",
+    "updated": "Update successfully",
+    "invalidPassword": "Password should have a minimum length of 6!",
+    "requiredPassword": "Please provide password!",
+    "invalidEmail": "Please Provide valid email!",
+    "emailRequired": "Please provide email!",
+    "nameRequired": "Please provide name!",
+    "firstnameRequired": "Please provide first name!",
+    "lastnameRequired": "Please provide last name!",
+    "emailPasswordError": "Please provide email and password both required",
+    "loginSuccessful":"User Login successfully",
+    "invalidLoginDetails": "Email or password incorrect",
+    "OTPSended": "OTP send successfully",
+    "emaiOtpRequired": "Please provide OTP!",
+    "invalidOTP": "OTP you have entered is invalid",
+    "requiredNewPassword": "Please provide new password!",
+    "passwordUpdateError": "Failed to update password, Please update again",
+    "invalidRequest": "You don't have authorization",
+    "permissionDenied": "You are not allowed to perform this action!",
+    "superAdminIdRequire": "Please provide id of super admin",
+    "PasswordRequired": "Please provide password!",
+    "wrongPassword": "Incorrect password!",
+    "invalidShippingDates": "Please provide valid shipping dates",
+    "missingFields": "Please Provide Valid Fields !",
+    "passwordRequired": "Please enter your password"
+  },
+
+
+  "users": {
+    "userExists": "User already exists with this email.",
+    "invalidCredentials": "Invalid email or password provided.",
+    "unauthorized": "Unauthorized access. Please login first.",
+    "userNotFound": "User does not exist",
+    "emailNotFound": "This email is not linked to a registered user.",
+    "passwordRequired": "Please enter your password",
+    "passwordIncorrect": "Email or password is incorrect"
+  },
+
+  "encryption":{
+    "dataRequired":"Data is required.",
+    "encryptionSuccess" : "Data Encryption successfully."
+  },
+  
+  "decryption":{
+    "decryptionSuccess": "Data decryption successfully.",
+    "encryptionStringRequired": "Encrypted string is required."
+  }
+}
