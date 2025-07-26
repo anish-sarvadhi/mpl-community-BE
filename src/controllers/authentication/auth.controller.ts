@@ -1,19 +1,15 @@
-import db from '../../models';
-import bcrypt from 'bcrypt'; 
+import bcrypt from 'bcrypt';
 import { createJWToken, verifyJWTToken } from '../../config/auth';
-
 import { logger } from '../../logger/Logger';
-import { Sequelize } from 'sequelize';
-
 import { ErrorType } from '../../utils/errorTypes';
 import appError from '../../utils/errorHelper';
 import { sendResponse } from '../../helpers/response';
+import UserModel from '../../models/users.model';
+import UserTokenModel from '../../models/user_token.model';
 
 export class AuthController {
-  private sequelize: Sequelize;
 
   constructor() {
-    this.sequelize = db.sequelize;
   }
 
   login = async (req, res, next) => {
@@ -27,28 +23,23 @@ export class AuthController {
         throw new appError("Password is required", ErrorType.bad_request);
       }
 
-      const models = db as any;
-
-      const user = await models.users.findOne({
-        where: { email },
-      });
-
+      const user = await UserModel.findOne({ email });
       if (!user) {
-        throw new appError("Email not found", ErrorType.not_found);
+        throw new appError('Email not found', ErrorType.not_found);
       }
 
-      if (!user.authenticate(password)) {
-        throw new appError("Incorrect password", ErrorType.unauthorized);
+      const isMatch = user.authenticate(password);
+      if (!isMatch) {
+        throw new appError('Incorrect password', ErrorType.unauthorized);
       }
-
       const token = createJWToken({ id: user.id, email: user.email });
 
       const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // Token expires in 24 hrs
 
-      await models.user_token.create({
-        user_id: user.id,
+      await UserTokenModel.create({
+        user_id: user._id,
         token,
-        expires_at: expiresAt,
+        expires_at: expiresAt
       });
 
       logger.info(`User ${user.email} logged in successfully.`);
@@ -85,20 +76,20 @@ export class AuthController {
         throw new appError('Invalid token payload', ErrorType.unauthorized);
       }
 
-      const models = db as any;
 
-      const user = await models.users.findOne({
-        where: { id: userId },
-        attributes: ['id', 'first_name', 'last_name', 'email', 'user_name'],
-      });
+      const user = await UserModel.findOne(
+        { _id: userId },
+        'id first_name last_name email user_name'
+      ).lean();
 
       if (!user) {
         throw new appError('User not found', ErrorType.not_found);
       }
 
-      const tokenRecord = await models.user_token.findOne({
-        where: { user_id: userId, token },
-      });
+      const tokenRecord = await UserTokenModel.findOne({
+        user_id: userId,
+        token,
+      }).lean();
 
       if (!tokenRecord) {
         throw new appError('Token invalid or revoked', ErrorType.unauthorized);

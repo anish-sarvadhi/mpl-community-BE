@@ -26,5 +26,5 @@ export enum END_POINT {
   VERIFY_JWT = "/verify-token",
   FORGOT_PASSWORD = "/forgot-password",
   GET_USER = "/list",
-
+  CONTENT = '/content'
 }

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import _ from 'lodash';
 
-import db from '../../models/index';
+import mongoose from 'mongoose';
 let model = 'User';
 class ApplicationController {
   errors: any;
@@ -10,36 +10,68 @@ class ApplicationController {
   }
 
   async _create(req, res, options = {}, callback = null) {
-    const user = await db[model].findOne({ where: { email: req.body.email }});
-    if (!user) {
-      return db[model].create(req.body)
-        .then(appuser => res.status(201).send({ success: true, data: appuser, message: options['message'] || 'Successfully Created' }))
-        .catch(error => res.status(400).json({ errors: error }));
+    try {
+      const Model = mongoose.model(model);
+
+      const existingUser = await Model.findOne({ email: req.body.email });
+
+      if (!existingUser) {
+        const newUser = await Model.create(req.body);
+
+        if (typeof callback === 'function') {
+          return callback(newUser);
+        }
+
+        return res.status(201).send({
+          success: true,
+          data: newUser,
+          message: options['message'] || 'Successfully Created',
+        });
+      }
+
+      return res.status(400).json({ message: 'user already exists!' });
+    } catch (error) {
+      return res.status(400).json({ errors: error });
     }
-    return res.status(400).json({ message: 'user already exits!' });
   }
 
-  _list(req, res, options = {}, callback = null) {
-    return db[model].findAll({ include: [{ all: true }] }).then(data =>
-      res.status(200).send({ success: true, data: data }))
-      .catch(error => res.status(400).json({ errors: error }));
+  async _list(req, res, options = {}, callback = null) {
+    try {
+      const Model = mongoose.model(model);
+      const data = await Model.find({}).populate({ path: '', options: { strictPopulate: false } });
+
+      if (typeof callback === 'function') {
+        return callback(data);
+      }
+
+      return res.status(200).send({ success: true, data });
+    } catch (error) {
+      return res.status(400).json({ errors: error });
+    }
   }
 
-  _findOne(req, res, callback = null) {
-    db[model].findOne(req.condition || {}).then(data => {
-      if (typeof (callback) === 'function')
-        callback(data);
-      else
-        res.status(200).send(data);
+  async _findOne(req, res, callback = null) {
+    try {
+      const Model = mongoose.model(model);
+
+      const condition = req.condition || {};
+      const data = await Model.findOne(condition);
+
+      if (typeof callback === 'function') {
+        return callback(data);
+      }
+
+      return res.status(200).send(data);
+    } catch (error) {
+      return res.status(400).json({ errors: error });
     }
-    ).catch(error => res.status(400).json({ errors: error }));
   }
 
   private isCallback(cb) {
-    return typeof (cb) === 'function';
+    return typeof cb === 'function';
   }
   private model() {
-    return db[model];
+    return mongoose.model(model);
   }
 }
 
