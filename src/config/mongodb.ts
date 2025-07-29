@@ -30,6 +30,7 @@ const connectMongoDB = async (): Promise<void> => {
 
     logger.info('✅ MongoDB connected successfully');
   } catch (error) {
+    console.error('❌ MongoDB connection error:', error);
     logger.error('❌ MongoDB connection error:', (error as Error).message);
     process.exit(1);
   }
