@@ -48,18 +48,20 @@
     "express-fileupload": "^1.5.1",
     "express-subdomain": "^1.0.5",
     "express-validator": "^6.14.2",
-    "fileupload": "^1.0.0",
+    "fileupload": "^0.2.1",
     "helmet": "^5.1.0",
     "i18n": "^0.15.1",
     "joi": "^17.6.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mongoose": "^8.16.5",
     "pako": "^2.1.0",
     "pg": "^8.7.3",
     "sequelize": "^6.37.7",
     "url": "^0.11.4",
-    "winston": "^3.8.1"
+    "winston": "^3.8.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^4.9.5"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -78,19 +80,17 @@
     "@typescript-eslint/eslint-plugin": "^8.38.0",
     "@typescript-eslint/parser": "^8.38.0",
     "env-cmd": "^10.1.0",
-    "eslint": "^9.32.0",
+    "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-node": "^4.1.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.5.3",
     "init": "^0.1.2",
-    "nodemon": "^2.0.19",
+    "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "sequelize-cli": "^6.6.3",
-    "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^4.9.5"
+    "ts-node-dev": "^2.0.0"
   }
 }
