@@ -3,8 +3,10 @@ import UserModel from '../models/users.model';
 import { logger } from '../logger/Logger';
 
 export function verifyJWT_MW(req, res, next) {
-    if (req.headers && req.headers['x-access-token']) {
-        verifyJWTToken(req.headers['x-access-token'])
+    // console.log("verifying JWT middleware...",req.headers);
+    if (req.headers && req.headers['authorization']) {
+        // console.log("verifying token:", req.headers['authorization']);
+        verifyJWTToken(req.headers['authorization'])
             .then(decode => {
                 UserModel.findOne({ email: decode['email'], _id: decode['id'] })
                     .then(user => {

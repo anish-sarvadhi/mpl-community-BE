@@ -18,11 +18,9 @@ export function initContentRoutes(app, router) {
 
     apiRoute.route('*').all(verifyJWT_MW);
 
-    // Modified/New Code
     apiRoute.post('/', validate(createContentSchema), contentController.createContent);
     apiRoute.get('/', contentController.getAllContents);
     apiRoute.get('/:id', contentController.getContentById);
-    // Modified/New Code
     apiRoute.put('/:id', validate(updateContentSchema), contentController.updateContent);
     apiRoute.delete('/:id', contentController.deleteContent);
 

@@ -44,7 +44,9 @@ const UserSchema: Schema<IUser> = new Schema<IUser>(
     },
   },
   {
-    timestamps: true, // adds createdAt and updatedAt
+    timestamps: true, // adds createdAt and updatedAt,
+    collection: 'users' // Explicitly set the collection name
+
   }
 );
 
@@ -66,5 +68,5 @@ UserSchema.methods.authenticate = function (value: string): boolean {
 };
 
 // 5. Export the model
-const User: Model<IUser> = mongoose.model<IUser>('User', UserSchema);
+const User: Model<IUser> = mongoose.model<IUser>('User', UserSchema, 'users');
 export default User;

@@ -12,6 +12,17 @@ export class ContentController {
                 contentData.date = new Date();
             }
 
+            // Check if content with the same contentId already exists
+            if (contentData.contentId) {
+                const existingContent = await Content.findOne({ contentId: contentData.contentId });
+                if (existingContent) {
+                    return res.status(409).json({
+                        success: false,
+                        message: `Content with ID "${contentData.contentId}" already exists. Please use a different content ID.`
+                    });
+                }
+            }
+
             logger.info(`Creating content with data: ${JSON.stringify(contentData)}`);
 
             const content = new Content(contentData);

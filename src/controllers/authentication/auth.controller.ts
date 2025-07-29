@@ -14,7 +14,8 @@ export class AuthController {
 
   login = async (req, res, next) => {
     try {
-      const { email, password } = req.body.data;
+      const { email, password } = req.body.data || req.body;
+
 
       if (!email) {
         throw new appError("Email is required", ErrorType.not_found);
@@ -62,7 +63,7 @@ export class AuthController {
 
   verifyToken = async (req, res, next) => {
     try {
-      const token = req.headers.authorization?.split(' ')[1];
+      const token = req.headers.authorization?.split(' ')[0];
 
       if (!token) {
         throw new appError('Token is required', ErrorType.unauthorized);
