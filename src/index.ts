@@ -1,8 +1,5 @@
-/**
- * Required External Modules
- */
 import * as dotenv from 'dotenv';
-import express,{ Express } from 'express';
+import express, { Express } from 'express';
 import cors from 'cors';
 import { json, urlencoded } from 'body-parser';
 
@@ -11,7 +8,8 @@ import { logger } from './logger/Logger';
 import { environment } from './config';
 import fileUpload from 'express-fileupload'
 import { errorHandlerMiddleware, responseHandling } from './middleware';
-
+import connectMongoDB from './config/mongodb';
+import User from './models/users.model';
 
 dotenv.config();
 
@@ -36,10 +34,10 @@ export class Server {
     }));
     this.app.use(urlencoded({
       extended: true,
-      limit : "500mb"
+      limit: "500mb"
     }));
-    this.app.set('trust proxy',true);
-    this.app.use(express.json({limit:'500mb'}));
+    this.app.set('trust proxy', true);
+    this.app.use(express.json({ limit: '500mb' }));
     this.app.use(json())
     this.app.use(
       fileUpload({
@@ -55,9 +53,18 @@ export class Server {
     // this.app.use(responseHandling);
     routes.initRoutes(this.app);
     this.app.use(errorHandlerMiddleware);
-    this.app.listen(PORT, () => {
-      logger.info(`👍 Server successfully started at port ${PORT}`);
-    });
+
+    (async () => {
+      try {
+        await connectMongoDB();
+        this.app.listen(PORT, () => {
+          logger.info(`👍 Server successfully started at port ${PORT}`);
+        });
+      } catch (error: any) {
+        logger.error(`❌ Failed to connect to MongoDB: ${error.message}`);
+        process.exit(1);
+      }
+    })();
   }
 
   getApp() {

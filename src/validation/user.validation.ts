@@ -29,22 +29,21 @@ export const createAccountSchema = (req, res, next): void => {
 
   validateRequest(req, next, schema);
 };
-  
+
 
 export const loginSchema = (req, res, next): void => {
   try {
+    // console.log("req", req.body);
     const schema = Joi.object({
-      data: Joi.object({
-        email: Joi.string().email().required().messages({
-          'string.email': i18n.__('common').invalidEmail,
-          'string.empty': i18n.__('common').emailRequired,
-          'any.required': i18n.__('common').emailRequired,
-        }),
-        password: Joi.string().required().messages({
-          'string.empty': i18n.__('users').passwordRequired,
-          'any.required': i18n.__('users').passwordRequired,
-        }),
-      }).required(),
+      email: Joi.string().email().required().messages({
+        'string.email': i18n.__('common').invalidEmail,
+        'string.empty': i18n.__('common').emailRequired,
+        'any.required': i18n.__('common').emailRequired,
+      }),
+      password: Joi.string().required().messages({
+        'string.empty': i18n.__('users').passwordRequired,
+        'any.required': i18n.__('users').passwordRequired,
+      }),
     });
 
     validateRequest(req, next, schema);

@@ -1,39 +1,36 @@
-module.exports = function (sequelize, DataTypes) {
-  const user_token = sequelize.define('user_token', {
-    id: {
-      type: DataTypes.BIGINT,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-    },
+import mongoose, { Schema, Document } from 'mongoose';
+
+export interface IUserToken extends Document {
+  user_id: mongoose.Types.ObjectId;
+  token: string;
+  expires_at: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date | null;
+}
+
+const UserTokenSchema: Schema = new Schema<IUserToken>(
+  {
     user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'users',
-        key: 'id',
-      },
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
     },
     token: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: String,
+      required: true,
     },
     expires_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
+      type: Date,
+      required: true,
     },
-  }, {
+  },
+  {
     timestamps: true,
-    freezeTableName: true,
-    paranoid: true,
-  });
+  }
+);
 
-  user_token.associate = function (models) {
-    user_token.belongsTo(models.users, {
-      foreignKey: 'user_id',
-      as: 'user',
-    });
-  };
+UserTokenSchema.index({ token: 1 }, { unique: true });
 
-  return user_token;
-};
+const UserTokenModel = mongoose.model<IUserToken>('user_token', UserTokenSchema);
+export default UserTokenModel;
